@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
     grids_node = readStrBmp(&image, argv[1], scale);
 
     printf("----------------------------------------------\n");
-    printf("alpha-expansion %s\n", trancation == 1 ? "(truncation)" : "(CH)");
+    printf("alpha-expansion %s\n", trancation == 1 ? "(通常のα-拡張)" : "(CH型α-拡張)");
     printf("input_file: %s\n", argv[1]);
     printf("output_file: %s\n", output_file);
     printf("label_size: %d\n", label_size);
@@ -84,8 +84,8 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
     printf("Vterm: ");
-    if(vterm == 0) printf("Vpq(fp, fq) = (fp - fq)^2\n");
-    else if(vterm == 1) printf("piecewise linear function\n");
+    if(vterm == 0) printf("打ち切り二乗関数\n");
+    else if(vterm == 1) printf("区分線形関数\n");
     else {
         fprintf(stderr, "error! vterm is 0 or 1 : %d\n", vterm);
         exit(EXIT_FAILURE);

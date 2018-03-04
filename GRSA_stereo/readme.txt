@@ -24,56 +24,57 @@ outputフォルダに出力画像が保存される
 
 コンパイル・実行方法
 compile: make
-run: ./grsa <input> <output1> <range_size> <half> <scale> <lambda> <T> <Dterm> <Vterm> <init_label> <segm> <output2> <allpairs>
+run: ./grsa <input> <output> <range_size> <half> <scale> <lambda> <T> <Dterm> <Vterm> <init_label> <segm> <output2> <swap>
 
-	<input> 入力画像 (../input/画像名) 
+<input> 入力画像 (../input/画像名) 
         画像名_right.bmp 画像名_left.bmp 画像名_truth.bmpを読み込みます
 
-	<output1> 出力画像 (~.bmp)
+<output> 出力画像 (~.bmp)
 
-	<range_size>
+<range_size>
             移動を行う範囲の大きさ
-    <half>
-            半移動を行うか 0:いいえ 1:はい
-            <segm>にて2を設定した場合と同様
-            <segm>にて設定することを推奨します
 
-    <scale> 
-            画像tsukubaは16
-			画像venusは8
-			画像teddyは4
+<scale> 
+        画像tsukubaは16
+	画像venusは8
+	画像teddyは4
 
-	<lambda> 平滑化項の重み付け　小数も可 (論文におけるパラメータ設定は全体のReadme.txtを参照)
+<lambda> 平滑化項の重み付け　小数も可 (論文におけるパラメータ設定は全体のReadme.txtを参照)
 
-	<T> 打ち切り定数 (自然数ならよい)
+<T> 打ち切り定数 (自然数ならよい)
+        Vpqが二乗関数の場合は入力値から二乗されます
 
-	<Dterm>
-            0:Birchfield and Tomasi’s function 
-            1:||L(i)-R(i-xi)||2 (隣接9画素に対して差を評価)
+<Dterm>
+        0:Birchfield and Tomasi’s function 
+        1:||L(i)-R(i-xi)||2 (隣接9画素に対して差を評価)
 
-    <Vterm>
-            0:打ち切り線形関数 
-            1:打ち切り二乗関数 
-            2:区分線形関数
+<Vterm>
+        0:打ち切り線形関数 
+        1:打ち切り二乗関数 
+        2:区分線形関数
 
-	<initlabel> 初期ラベル 
+<initlabel> 
+        初期ラベル 
                 (論文の実験では
-			   画像tsukubaは5
-			   画像venusは7
-		 	   画像teddyは20とした.)
+                画像tsukubaは5
+		画像venusは7
+		画像teddyは20とした.)
 
-    <segm> T-区間の重複度 (2ならば1/2だけ重複)
-            0:Liuの実装
-            -1:Vekslerの実装
+<j>
+        0: j=1(Vekslerの実装)
+        1: j=T/2
+        2: j=2T/3
+        3: j=3T/4
+        4: j=T(Liuの実装)
 
-	<output2> <output1>に対して1サイクルのみ交換アルゴリズムを実行した後の出力画像 (~.bmp)
+<swap>  
+        0:通常の範囲交換アルゴリズム
+        1:範囲交換アルゴリズム+収束後1サイクルα-β交換
+        2:各サイクルですべてのペアを考慮
 
-    <allpairs>  各サイクルで全てのペアに対して移動を行うか 0:いいえ 1:はい
-                1を設定した場合収束後に交換アルゴリズムは実行されません
-	
-コンパイル・実行例　---画像: tsukuba λ=2 T=8 初期ラベル5 データ項がBirchfield and Tomasi’s function  平滑化項が2乗関数, T-区間の重複度2のとき---
+コンパイル・実行例　---画像: tsukuba λ=2 T=8 初期ラベル5 データ項がBirchfield and Tomasi’s function  平滑化項が2乗関数, j=T/2のとき---
 compile: make
-run: ./grsa ../input/tsukuba output1.bmp 8 0 16 2 8 0 1 5 2 output2.bmp 0
+run: ./grsa ../input/tsukuba output.bmp 8 16 2 8 0 1 5 1 0
 
 
 

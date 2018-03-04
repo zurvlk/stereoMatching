@@ -56,9 +56,9 @@ int main(int argc, char *argv[]) {
     segm = 0;
     allpairs = 0;
     // range = 0;
-    if (argc != 2 && argc != 3 && argc != 14) {
+    if (argc != 2 && argc != 3 && argc != 12) {
         printf("argc: %d\n", argc);
-        printf("Usage: %s <input_file> <output_file> <range_size> <half> <scale> <lambda> <T> <Dterm 0: Dt, 1:normal> <vterm> <init_label> <segm> <output2> <allpairs>\n", argv[0]);
+        printf("Usage: %s <input_file> <output_file> <range_size> <scale> <lambda> <T> <Dterm 0: Dt, 1:normal> <vterm> <init_label> <j> <swap>\n", argv[0]);
         return (EXIT_FAILURE);
     }
 
@@ -72,9 +72,9 @@ int main(int argc, char *argv[]) {
     strcpy(imgright, argv[1]);
     strcpy(imgtruth, argv[1]);
 
-    strcat(imgleft, "left.bmp");
-    strcat(imgright, "right.bmp");
-    strcat(imgtruth, "truth.bmp");
+    strcat(imgleft, "_left.bmp");
+    strcat(imgright, "_right.bmp");
+    strcat(imgtruth, "_truth.bmp");
     
     ReadBmp(imgleft, raw_left);
     ReadBmp(imgright, raw_right);
@@ -98,22 +98,16 @@ int main(int argc, char *argv[]) {
     else strcpy(output_file, argv[2]);
     if (argc >= 5 && argc <= 14) {
         range_size = atoi(argv[3]);
-        harf = atoi(argv[4]);
-        scale = atoi(argv[5]);
-        lambda = atoi(argv[6]);
-        T = atof(argv[7]);
-        dterm = atoi(argv[8]);
-        function = atoi(argv[9]);
-        init_label = atoi(argv[10]);
-        segm = atoi(argv[11]);
-        allpairs = atoi(argv[13]);
+        // harf = atoi(argv[4]);
+        scale = atoi(argv[4]);
+        lambda = atoi(argv[5]);
+        T = atof(argv[6]);
+        dterm = atoi(argv[7]);
+        function = atoi(argv[8]);
+        init_label = atoi(argv[9]);
+        segm = atoi(argv[10]);
+        allpairs = atoi(argv[11]);
  
-    }
-
-    if (segm >= 0) {
-        subset = 1;
-    } else {
-        subset = 0;
     }
 
     if(T < range_size) {
@@ -167,6 +161,54 @@ int main(int argc, char *argv[]) {
     ss.T = T;
     la = lambda;
     
+
+    flag_infty = 1;
+    printf("----------------------------------------------\n");
+    printf("input_file: %s\n", argv[1]);
+    printf("output_file: %s\n", output_file);
+    printf("label_size: %d\n", label_size);
+    printf("range_size: %d\n", range_size);
+    printf("lambda: %d\n", lambda);
+    printf("j: ");
+    
+    switch (segm) {
+        case 0:
+            printf("1");
+            subset = 1;
+            break;
+        case 1:
+            printf("T/2");
+            break;
+        case 2:
+            printf("2T/3");
+            break;
+        case 3:
+            printf("3T/4");
+            break;
+        case 4:
+            printf("T");
+    }
+
+    if (segm >= 1 && segm <= 3) segm++;
+    else if (segm = 4) segm = 0;
+    else segm = -1;
+
+    printf("\n");
+    printf("T: %lf\n", T);
+    if(dterm == 0 || dterm == 1) {
+        printf("Data term: ");
+        if(dterm == 0) printf("Birchfield and Tomasi’s function\n");
+        else if (dterm == 1) printf("normal\n");
+
+        if(theta(2, 2 * 2) > 2) printf("打ち切り二乗関数\n");
+        else printf("区分線形関数\n");
+    } else if (dterm >= 2) {
+        printf("Data term: ");
+        printf("Birchfield and Tomasi’s function\n");
+        // printf("piecewise linear function\n");
+        printf("打ち切り二乗関数\n");
+    }
+
     total_ss_count = gen_submodular_subsets(label_size, range_size, &ss);
 
     #if _OUTPUT_SUBMODULAR_SUBSETS_
@@ -181,29 +223,6 @@ int main(int argc, char *argv[]) {
         }
     }
     #endif
-
-    flag_infty = 1;
-    printf("----------------------------------------------\n");
-    printf("input_file: %s\n", argv[1]);
-    printf("output_file: %s\n", output_file);
-    printf("label_size: %d\n", label_size);
-    printf("range_size: %d\n", range_size);
-    printf("lambda: %d\n", lambda);
-    printf("segm: %d\n", segm);
-    printf("T: %.2f\n", T);
-    if(dterm == 0 || dterm == 1) {
-        printf("Data term: ");
-        if(dterm == 0) printf("Birchfield and Tomasi’s function\n");
-        else if (dterm == 1) printf("normal\n");
-
-        if(theta(2, 2 * 2) > 2) printf("Vpq(fp, fq) = (fp - fq)^2\n");
-        else printf("Vpq(fp, fq) = |fp - fq|\n");
-    } else if (dterm >= 2) {
-        printf("Data term: ");
-        printf("Birchfield and Tomasi’s function\n");
-        // printf("piecewise linear function\n");
-        printf("Vpq(fp, fq) = (fp - fq)^2\n");
-    }
 
     // エネルギー計算用一層グラフ作成
     node = grids_node + 2;
@@ -230,7 +249,7 @@ int main(int argc, char *argv[]) {
     for (i = 1; i <= grids_node ; i++) label[i] = init_label;
     cpyarray(newlabel, label, grids_node);
     prev_energy = energy_str(&Ge, label,  T, lambda, height, width, label_max, left, right, raw_left, raw_right);
-    printf("Energy (before): %.0lf\n", prev_energy);
+    printf("Energy (before): %lf\n", prev_energy);
 
     #if _OUTPUT_T_
     fprintf(fp, "Energy (before): %lf\n", prev_energy);
@@ -476,29 +495,29 @@ int main(int argc, char *argv[]) {
 
     if (ab_swap) {
 
-        printf("Energy (after): %.2lf\n", energy_str(&Ge, label,  T, lambda, height, width, label_max, left, right, raw_left, raw_right));
-        printf("Iteration: %d\n", ci);
-        printf("Run time[%.2lf]\n", (double) (clock() - start) / CLOCKS_PER_SEC);
+        // printf("Energy (after): %.2lf\n", energy_str(&Ge, label,  T, lambda, height, width, label_max, left, right, raw_left, raw_right));
+        // printf("Iteration: %d\n", ci);
+        // printf("Run time[%.2lf]\n", (double) (clock() - start) / CLOCKS_PER_SEC);
         
 
-        // output to bitmap file
-        for (i = 0; i <  raw_left->height; i++) {
-            for (j = 0; j < raw_left->width; j++) {
-                output->data[i][j].r = label[i * raw_left->width + j + 1] * scale;
-                output->data[i][j].g = output->data[i][j].r;
-                output->data[i][j].b = output->data[i][j].r;
-            }
-        }
+        // // output to bitmap file
+        // for (i = 0; i <  raw_left->height; i++) {
+        //     for (j = 0; j < raw_left->width; j++) {
+        //         output->data[i][j].r = label[i * raw_left->width + j + 1] * scale;
+        //         output->data[i][j].g = output->data[i][j].r;
+        //         output->data[i][j].b = output->data[i][j].r;
+        //     }
+        // }
 
-        WriteBmp(output_file, output);
-        if (strcmp(output_file, "/dev/null") != 0){
-            ReadBmp(output_file, (output));
-            // Gray(&truth, &truth);
-            Gray(output, output);
-            err = err_rate(output, truth, scale);
-            printf("Error rate : %lf\n", err);
-        }
-        printf("----------------------------------------------\n");
+        // WriteBmp(output_file, output);
+        // if (strcmp(output_file, "/dev/null") != 0){
+        //     ReadBmp(output_file, (output));
+        //     // Gray(&truth, &truth);
+        //     Gray(output, output);
+        //     err = err_rate(output, truth, scale);
+        //     printf("Error rate : %lf\n", err);
+        // }
+        // printf("----------------------------------------------\n");
 
         temp[0] = 2;
         node = grids_node + 2;
@@ -557,8 +576,9 @@ int main(int argc, char *argv[]) {
     }
     #endif
     flag_infty = 0;
-    if (ab_swap) printf("Energy (after-ab): %.2lf\n", energy_str(&Ge, label,  T, lambda, height, width, label_max, left, right, raw_left, raw_right));
-    else printf("Energy (after): %.2lf\n", energy_str(&Ge, label,  T, lambda, height, width, label_max, left, right, raw_left, raw_right));
+    // if (ab_swap) printf("Energy (after-ab): %.2lf\n", energy_str(&Ge, label,  T, lambda, height, width, label_max, left, right, raw_left, raw_right));
+    // else 
+    printf("Energy (after): %.2lf\n", energy_str(&Ge, label,  T, lambda, height, width, label_max, left, right, raw_left, raw_right));
     printf("Iteration: %d\n", ci);
     printf("Run time[%.2lf]\n", (double) (clock() - start) / CLOCKS_PER_SEC);
 
@@ -571,8 +591,9 @@ int main(int argc, char *argv[]) {
             output->data[i][j].b = output->data[i][j].r;
         }
     }
-    if (ab_swap && allpairs != 1) WriteBmp(argv[12], output);
-    else WriteBmp(output_file, output);
+    // if (ab_swap && allpairs != 1) WriteBmp(argv[12], output);
+    // else WriteBmp(output_file, output);
+    WriteBmp(output_file, output);
 
     #if _OUTPUT_T_
     fprintf(fp, "Energy (after): %.1lf\n", energy_str(&Ge, label,  T, lambda, height, width, label_max, left, right, raw_left, raw_right));

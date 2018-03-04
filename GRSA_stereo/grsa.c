@@ -246,6 +246,7 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
         for (i = 1; i <= nc2(label_size); i++) ss->ls[i][0] = 2;
         ss->number = nc2(label_size);
     } else {
+        printf("segm %d\n", segm);
         for (i = 0; i < ccvex; i++) {
             if (convex[i][0] == 0) {
                 if (convex[i][1] > range_size) rs2 = range_size;

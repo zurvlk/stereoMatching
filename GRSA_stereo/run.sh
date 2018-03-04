@@ -11,7 +11,7 @@ do
     do
         lambda=2
 
-        if [ $vterm -eq 0]; then
+        if [ $vterm -eq 0 ]; then
             T=8
         else
             T=7
