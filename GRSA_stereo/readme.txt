@@ -6,15 +6,29 @@ run: ./run.sh
 
 最終エネルギーと実行時間とエラー率を.logファイルとしてlogフォルダに出力する
 
-outputフォルダに出力画像 (s_*_d_v_l_t.bmp/afterab_s_*_d_v_l_t.bmp)が保存される
-s,*,d,v,l,tには実験に用いた各パラメータの値となる
+outputフォルダに出力画像 (j_*_d_v_l_t_sw.bmp)が保存される
+j,*,d,v,l,t,swには実験に用いた各パラメータの値となる
 
-s:T-区間の重複度 (2ならば1/2だけ重複)
+j:jの設定
+        0: j=1(Vekslerの実装)
+        1: j=T/2
+        2: j=2T/3
+        3: j=3T/4
+        4: j=T(Liuの実装)
 *:画像名
-d:データ項 0:Birchfield and Tomasi’s function 1:||L(i)-R(i-xi)||2 (隣接9画素に対して差を評価)
-v:平滑化項 0:打ち切り線形関数 1:打ち切り二乗関数 2:区分線形関数
+d:データ項 
+        0:Birchfield and Tomasi’s function 
+        1:||L(i)-R(i-xi)||2 (隣接9画素に対して差を評価)
+v:平滑化項 
+        0:打ち切り線形関数 
+        1:打ち切り二乗関数 
+        2:区分線形関数
 l:lambda
 t:T
+sw:
+        0:通常の範囲交換アルゴリズム
+        1:範囲交換アルゴリズム+収束後1サイクルα-β交換
+        2:各サイクルですべてのペアを考慮
 
 *****************************************************************************************************
 	範囲交換移動アルゴリズムでステレオ対応問題を解くためのプログラム
@@ -24,7 +38,7 @@ outputフォルダに出力画像が保存される
 
 コンパイル・実行方法
 compile: make
-run: ./grsa <input> <output> <range_size> <half> <scale> <lambda> <T> <Dterm> <Vterm> <init_label> <segm> <output2> <swap>
+run: ./grsa <input> <output> <range_size> <scale> <lambda> <T> <Dterm> <Vterm> <init_label> <j> <swap>
 
 <input> 入力画像 (../input/画像名) 
         画像名_right.bmp 画像名_left.bmp 画像名_truth.bmpを読み込みます
@@ -32,7 +46,7 @@ run: ./grsa <input> <output> <range_size> <half> <scale> <lambda> <T> <Dterm> <V
 <output> 出力画像 (~.bmp)
 
 <range_size>
-            移動を行う範囲の大きさ
+        移動を行う範囲の大きさ
 
 <scale> 
         画像tsukubaは16
@@ -53,12 +67,10 @@ run: ./grsa <input> <output> <range_size> <half> <scale> <lambda> <T> <Dterm> <V
         1:打ち切り二乗関数 
         2:区分線形関数
 
-<initlabel> 
-        初期ラベル 
-                (論文の実験では
-                画像tsukubaは5
-		画像venusは7
-		画像teddyは20とした.)
+<initlabel> 初期ラベル 
+        画像tsukubaは5
+	画像venusは7
+	画像teddyは20
 
 <j>
         0: j=1(Vekslerの実装)

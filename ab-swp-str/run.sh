@@ -6,6 +6,13 @@ result=`date +%Y%m%d_%H-%M-%S`.log
 info=ab-swp
 echo "---ab-swp---"
 dterm=0
+
+
+if [ ! -e a-estr ]; then
+    echo "実行ファイル:a-estrが存在しません.再度makeしコンパイルを行ってください"
+    exit 0
+fi
+
 for vterm in 0 1
 do
     lambda=2
@@ -17,7 +24,7 @@ do
     fi
     job_start=`date +%s`
     
-    ./a-estr ../input/tsukuba_ output/${info}_tsukuba_${dterm}_${vterm}_${lambda}_${T}.bmp  16 $lambda ${T} ${dterm} ${vterm} 5　>> log/${info}_tsukuba.log
+    ./a-estr ../input/tsukuba output/${info}_tsukuba_${dterm}_${vterm}_${lambda}_${T}.bmp 16 $lambda ${T} ${dterm} ${vterm} 5　>> log/${info}_tsukuba.log
     job_end=`date +%s`
     time=$((job_end - job_start))
     count=`expr $count + 1`
@@ -37,7 +44,7 @@ do
     fi
 
     job_start=`date +%s`
-    ./a-estr ../input/venus_ output/${info}_venus_${dterm}_${vterm}_${lambda}_${T}.bmp 8 $lambda $T ${dterm} ${vterm} 7　>> log/${info}_venus.log
+    ./a-estr ../input/venus output/${info}_venus_${dterm}_${vterm}_${lambda}_${T}.bmp 8 $lambda $T ${dterm} ${vterm} 7　>> log/${info}_venus.log
     job_end=`date +%s`
     time=$((job_end - job_start));
     count=`expr $count + 1`
@@ -48,12 +55,16 @@ done
 
 
 for vterm in 0 1
+if [ ! -e a-estr ]; then
+    echo "実行ファイル:a-estrが存在しません.再度makeしコンパイルを行ってください"
+    exit 0
+fi
 do
     lambda=2
     T=9
 
     job_start=`date +%s`
-    ./a-estr ../input/teddy_ output/${info}_teddy_${dterm}_${vterm}_${lambda}_${T}.bmp 4 $lambda $T ${dterm} ${vterm} 20 >> log/${info}_teddy.log
+    ./a-estr ../input/teddy output/${info}_teddy_${dterm}_${vterm}_${lambda}_${T}.bmp 4 $lambda $T ${dterm} ${vterm} 20 >> log/${info}_teddy.log
     job_end=`date +%s`
     time=$((job_end - job_start));
     count=`expr $count + 1`

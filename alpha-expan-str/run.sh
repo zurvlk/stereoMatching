@@ -7,6 +7,11 @@ info=a-exp
 echo "---a-exp---"
 dterm=0
 
+if [ ! -e a-estr ]; then
+    echo "実行ファイル:a-estrが存在しません.再度makeしコンパイルを行ってください"
+    exit 0
+fi
+
 for truncation in 0 1
 do
     for vterm in 0 1

@@ -110,6 +110,27 @@ int main(int argc, char *argv[]) {
  
     }
 
+    switch (allpairs) {
+        case 0:
+            printf("通常の範囲交換アルゴリズム\n");
+            ab_swap = 0;
+            allpairs = 0;
+            break;
+        case 1:
+            printf("範囲交換アルゴリズム+収束後1サイクルα-β交換\n");
+            ab_swap = 1;
+            allpairs = 0;
+            break;
+        case 2:
+            printf("各サイクルですべてのペアを考慮\n");
+            ab_swap = 0;
+            allpairs = 1;
+            break;
+        default:
+            printf("<swap>には0から2までの数値を入力してください\n");
+            exit(EXIT_FAILURE);
+    }
+
     if(T < range_size) {
         fprintf(stderr, "error! T (%f) < range_size (%d)\n", T, range_size);
         exit (EXIT_FAILURE);
@@ -190,7 +211,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (segm >= 1 && segm <= 3) segm++;
-    else if (segm = 4) segm = 0;
+    else if (segm == 4) segm = 0;
     else segm = -1;
 
     printf("\n");

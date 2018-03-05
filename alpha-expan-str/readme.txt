@@ -23,36 +23,36 @@ outputフォルダに出力画像が保存される
 
 コンパイル・実行方法
 compile: make
-run: ./a-estr <input_file> <output_file> <scale> <lambda> <T> <dterm> <vterm> <init_label> <truncation>
-	<input> 入力画像 (../input/画像名) 
+run: ./a-estr <input_file> <output_file> <scale> <lambda> <T> <dterm> <vterm> <init_label> <α-拡張の種類>
+<input> 入力画像 (../input/画像名) 
         画像名_right.bmp 画像名_left.bmp 画像名_truth.bmpを読み込みます
 
-	<output_file> 出力画像 (~.bmp)
+<output_file> 出力画像 (~.bmp)
 
-    <scale> 
+<scale> 
             画像tsukubaは16
 			画像venusは8
 			画像teddyは4
 
-	<lambda> 平滑化項の重み付け　小数も可 (論文におけるパラメータ設定は全体のReadme.txtを参照)
+<lambda> 平滑化項の重み付け　小数も可 (論文におけるパラメータ設定は全体のReadme.txtを参照)
 
-	<T> 打ち切り定数 (自然数ならよい)
+<T> 打ち切り定数 (自然数ならよい)
 
-	<Dterm>
+<Dterm>
             0:Birchfield and Tomasi’s function 
             1:||L(i)-R(i-xi)||2 (隣接9画素に対して差を評価)
 
-    <Vterm>
+<Vterm>
             0:打ち切り二乗関数 
             1:区分線形関数
 
-	<initlabel> 初期ラベル 
+<initlabel> 初期ラベル 
                 (論文の実験では
 			   画像tsukubaは5
 			   画像venusは7
 		 	   画像teddyは20とした.)
 
-    <truncation>
+<α-拡張の種類>
                 0:Carr and Hartleyのα-拡張+打ち切り法
                 1:通常のα-拡張+打ち切り法
 	
