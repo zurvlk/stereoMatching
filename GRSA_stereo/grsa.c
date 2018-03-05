@@ -207,14 +207,14 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
                 }
             }
         }
-        for (i = 1; i <= ss->number; i++) {
-            printf("submodular subsets: ");
-            printf("%d, (%d) ",i, ss->ls[i][0]);
-            for (j = 1; j <= ss->ls[i][0]; j++) {
-                printf("%d ", ss->ls[i][j]);
-            }
-            printf(" end\n");
-        }
+        // for (i = 1; i <= ss->number; i++) {
+        //     printf("submodular subsets: ");
+        //     printf("%d, (%d) ",i, ss->ls[i][0]);
+        //     for (j = 1; j <= ss->ls[i][0]; j++) {
+        //         printf("%d ", ss->ls[i][j]);
+        //     }
+        //     printf(" end\n");
+        // }
         if ((temp = (int **)realloc(ss->ls, (ss->number + 1) * sizeof(int *))) == NULL) {
             fprintf(stderr, "Error!:malloc[main()->ls]\n");
             exit(EXIT_FAILURE);
@@ -246,7 +246,7 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
         for (i = 1; i <= nc2(label_size); i++) ss->ls[i][0] = 2;
         ss->number = nc2(label_size);
     } else {
-        printf("segm %d\n", segm);
+        // printf("segm %d\n", segm);
         for (i = 0; i < ccvex; i++) {
             if (convex[i][0] == 0) {
                 if (convex[i][1] > range_size) rs2 = range_size;
@@ -255,10 +255,12 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
 
                 if (segm > 0) {
                     j = rs2 - (rs2 / segm + 1);
+                    // printf("%d\n", j);
                     do {
                         j += rs2 - (rs2 / segm + 1);
                         large_array++;
-                    } while (j + rs2 - (rs2 / segm + 1) < label_size);
+                        // printf("%d\n", j);
+                    } while (j + rs2 < label_size);
                     large_array++;
                     printf("large_array = %d\n", large_array);
                     ss->number = large_array;
@@ -271,13 +273,17 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
                         ss->ls[j][0] = rs2;
                         if(j != 1) ss->ls[j][1] = ss->ls[j - 1][rs2 - (rs2 / segm)];
                         else ss->ls[j][1] = 0;
+                        // printf("%d ", ss->ls[j][1]);
                         for (k = 2; k <= rs2; k++) {
                             //segmentation fault
                             // printf("%d, %d\n", j, k);
                             ss->ls[j][k] = ss->ls[j][k - 1] + 1;
+                            // printf("%d ", ss->ls[j][k]);
                             n = ss->ls[j][k] - (rs2 / segm);
                         }
+                        // printf("\n");
                     }
+
                     size = label_size - n;
                     if ((ss->ls[large_array] = (int *)malloc(sizeof(int) * size)) == NULL) {
                         fprintf(stderr, "Error!:malloc[main()->ls]\n");
@@ -285,11 +291,13 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
                     }
                     ss->ls[large_array][0] = size;
                     ss->ls[large_array][1] = n;
-
+                    // printf("size : %d\n", size);
                     for (j = 2; ss->ls[large_array][j - 1] + 1 <= label_max; j++) {
                         ss->ls[large_array][j] = ss->ls[large_array][j - 1] + 1;
                         n = ss->ls[large_array][j];
+                        // printf("%d ", ss->ls[large_array][j]);
                     }
+                    // printf("\n");
 
                 } else {
                     //
@@ -409,7 +417,7 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
             }
 
         }
-        printf("%d\n", ss->number);
+        // printf("%d\n", ss->number);
         if (allpairs) {
             for (i = 1; i <= nc2(label_size); i++) {
                 // printf("pairs[%d] = (%d, %d, %d)\n", i, pairs[i][0], pairs[i][1], pairs[i][2]);
@@ -429,7 +437,7 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
                 }
             }
         }
-        printf("%d\n", ss->number);
+        // printf("%d\n", ss->number);
 
         if ((temp = (int **)realloc(ss->ls, (ss->number + 1) * sizeof(int *))) == NULL) {
             fprintf(stderr, "Error!:malloc[main()->ls]\n");

@@ -17,7 +17,7 @@
 #define _OUTPUT_PROGRESS_ 0 // 処理過程ファイル出力 0:出力しない 1:出力する
 #define _RUN_FIRST_ONLY_ 0 // 1度目の移動で終了(デバッグ用)
 #define _SHOW_EACH_ENERGY_ 0 // 各移動時にエネルギー表示
-#define _OUTPUT_SUBMODULAR_SUBSETS_ 0
+#define _OUTPUT_SUBMODULAR_SUBSETS_ 1
 #define _MOVE_FORCE_ 1 // 取り得ない値の場合に強制的に移動 0:行わない 1:行う
 #define T_LIMIT 50000 //指定時間経過時に収束しない場合強制的に終了(約12h)
 
