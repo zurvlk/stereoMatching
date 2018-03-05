@@ -68,8 +68,15 @@ int main(int argc, char *argv[]) {
     printf("lambda: %d\n", lambda);
     printf("T: %.2f\n", T);
     printf("Data term: ");
-    if(dterm == 0) printf("Dt\n");
+    if(dterm == 0) printf("Birchfield and Tomasi’s function\n");
     else printf("normal\n");
+        printf("Vterm: ");
+    if(vterm == 0) printf("打ち切り二乗関数\n");
+    else if(vterm == 1) printf("区分線形関数\n");
+    else {
+        fprintf(stderr, "error! vterm is 0 or 1 : %d\n", vterm);
+        exit(EXIT_FAILURE);
+    }
 
 
     node = grids_node + 2;

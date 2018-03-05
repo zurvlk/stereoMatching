@@ -251,10 +251,9 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
             if (convex[i][0] == 0) {
                 if (convex[i][1] > range_size) rs2 = range_size;
                 else rs2 = convex[i][1];
-
                 large_array = 1;
 
-                if (segm != 0) {
+                if (segm > 0) {
                     j = rs2 - (rs2 / segm + 1);
                     do {
                         j += rs2 - (rs2 / segm + 1);
@@ -293,7 +292,7 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
                     }
 
                 } else {
-                
+                    //
                     j = rs2 - 1;
                     do {
                         j += rs2 - 1;
@@ -330,29 +329,29 @@ int gen_submodular_subsets(int label_size, int range_size, Subsets *ss) {
                         n = ss->ls[large_array][j];
                     }
 
-                    if (harf) {
-                        for (j = large_array + 1; j < 2 * large_array - 1; j++) {
-                            if ((ss->ls[j] = (int *)malloc(sizeof(int) * (rs2 + 1))) == NULL) {
-                                fprintf(stderr, "Error!:malloc[main()->ls(harf1)]\n");
-                                exit(EXIT_FAILURE);
-                            }
-                            ss->ls[j][0] = rs2;
-                            if(j == large_array + 1) ss->ls[j][1] = range_size / 2;
-                            else ss->ls[j][1] = ss->ls[j - 1][range_size];
-                            for (k = 2; k <= rs2; k++) {
-                                // printf("%d, %d\n", j, k);
-                                ss->ls[j][k] = ss->ls[j][k - 1] + 1;
-                                n = ss->ls[j][k];
-                                // printf("%d ", ss->ls[j][k]);
-                            }
-                            // printf("\n");
-                        }
+                    // if (harf) {
+                    //     for (j = large_array + 1; j < 2 * large_array - 1; j++) {
+                    //         if ((ss->ls[j] = (int *)malloc(sizeof(int) * (rs2 + 1))) == NULL) {
+                    //             fprintf(stderr, "Error!:malloc[main()->ls(harf1)]\n");
+                    //             exit(EXIT_FAILURE);
+                    //         }
+                    //         ss->ls[j][0] = rs2;
+                    //         if(j == large_array + 1) ss->ls[j][1] = range_size / 2;
+                    //         else ss->ls[j][1] = ss->ls[j - 1][range_size];
+                    //         for (k = 2; k <= rs2; k++) {
+                    //             // printf("%d, %d\n", j, k);
+                    //             ss->ls[j][k] = ss->ls[j][k - 1] + 1;
+                    //             n = ss->ls[j][k];
+                    //             // printf("%d ", ss->ls[j][k]);
+                    //         }
+                    //         // printf("\n");
+                    //     }
 
-                        large_array = 2 * large_array - 2;
+                    //     large_array = 2 * large_array - 2;
                         
-                        ss->number = large_array;
+                    //     ss->number = large_array;
 
-                    }
+                    // }
                 }
                 
                 if (allpairs) {

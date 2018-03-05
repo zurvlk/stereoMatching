@@ -30,9 +30,9 @@ double readStrBmp(Image *image, char filename[], int scale) {
     strcpy(imgright, filename);
     strcpy(imgtruth, filename);
 
-    strcat(imgleft, "left.bmp");
-    strcat(imgright, "right.bmp");
-    strcat(imgtruth, "truth.bmp");
+    strcat(imgleft, "_left.bmp");
+    strcat(imgright, "_right.bmp");
+    strcat(imgtruth, "_truth.bmp");
 
     // Read Bitmap
     image->raw_left = (img *)malloc(sizeof(img));

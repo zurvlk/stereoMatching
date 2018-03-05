@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     char pf[100];
     system("rm output/*.bmp &> /dev/null");
 #endif
-    subset = 0; // 0: Rangeswap 1: GRSA;
+    subset = 0; 
     harf = 0;
     dterm = 0;
     function = 1;

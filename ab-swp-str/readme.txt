@@ -47,10 +47,10 @@ run: ./a-estr <input_file> <output_file> <scale> <lambda> <T> <dterm> <vterm> <i
             1:区分線形関数
 
 	<initlabel> 初期ラベル 
-                (論文の実験では
-			   画像tsukubaは5
-			   画像venusは7
-		 	   画像teddyは20とした.)
+            (論文の実験では
+			画像tsukubaは5
+			画像venusは7
+		 	画像teddyは20とした.)
 
 	
 コンパイル・実行例　---画像: tsukuba λ=2 T=8 初期ラベル5 データ項がBirchfield and Tomasi’s function  平滑化項が2乗関数を設定するとき---
